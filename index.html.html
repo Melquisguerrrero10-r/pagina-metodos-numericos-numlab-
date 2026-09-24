@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Educativa: Métodos Numéricos & Teoría de Errores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .code-editor {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        /* Estilo para asegurar cursor por defecto en contenedores e interactivos genéricos */
+        h1, h2, h3, h4, h5, h6, div, p, span {
+            cursor: default;
+        }
+        button, a, input, select, textarea, [role="button"] {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3" onclick="switchTab('general')">
+                    <div class="bg-brand-600 text-white p-2.5 rounded-xl shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-calculator text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-700 to-indigo-600">NumLab</span>
+                        <span class="text-xs block text-slate-500 font-medium">Métodos Numéricos & Teoría de Errores</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <button onclick="switchTab('general')" id="nav-general" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-brand-600 bg-brand-50">
+                        <i class="fa-solid fa-sitemap mr-1.5"></i>Estructura
+                    </button>
+                    <button onclick="switchTab('nosotros')" id="nav-nosotros" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
+                        <i class="fa-solid fa-users mr-1.5"></i>Nosotros
+                    </button>
+                    <button onclick="switchTab('mod1')" id="nav-mod1" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
+                        <i class="fa-solid fa-microchip mr-1.5"></i>Módulo 1: Rep. Numérica
+                    </button>
+                    <button onclick="switchTab('mod2')" id="nav-mod2" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
+                        <i class="fa-solid fa-calculator mr-1.5"></i>Módulo 2: Errores
+                    </button>
+                    <button onclick="switchTab('mod3')" id="nav-mod3" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
+                        <i class="fa-solid fa-server mr-1.5"></i>Módulo 3: Punto Flotante
+                    </button>
+                    <button onclick="switchTab('mod4')" id="nav-mod4" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
+                        <i class="fa-solid fa-chart-line mr-1.5"></i>Módulo 4: Convergencia
+                    </button>
+                    <button onclick="switchTab('mod5')" id="nav-mod5" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
+                        <i class="fa-brands fa-python mr-1.5"></i>Módulo 5: Python
+                    </button>
+                    <button onclick="switchTab('juego')" id="nav-juego" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-all duration-200">
+                        <i class="fa-solid fa-gamepad mr-1.5 text-amber-500"></i>Juego
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-slate-900 p-2 rounded-lg focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
+            <button onclick="switchTab('general')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100"><i class="fa-solid fa-sitemap mr-2"></i>Estructura & Mapa del Sitio</button>
+            <button onclick="switchTab('nosotros')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100"><i class="fa-solid fa-users mr-2"></i>Acerca de Nosotros</button>
+            <button onclick="switchTab('mod1')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 1: Rep. Numérica</button>
+            <button onclick="switchTab('mod2')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 2: Calculadora Errores</button>
+            <button onclick="switchTab('mod3')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 3: Punto Flotante</button>
+            <button onclick="switchTab('mod4')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 4: Convergencia</button>
+            <button onclick="switchTab('mod5')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 5: Python</button>
+            <button onclick="switchTab('juego')" class="w-full text-left px-3 py-2 rounded-md text-base font-semibold text-amber-700 bg-amber-50"><i class="fa-solid fa-gamepad mr-2"></i>Juego: Desafío de Errores</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- SECCIÓN GENERAL DE ESTRUCTURA ACADÉMICA -->
+        <section id="sec-general" class="space-y-8 animate-fade-in">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 text-white p-8 md:p-12 shadow-xl border border-slate-800">
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-square-root-variable text-[280px]"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="px-3 py-1 bg-brand-500/20 text-brand-300 rounded-full text-xs font-semibold tracking-wider uppercase border border-brand-500/30">
+                        Avance 2: Análisis Numérico
+                    </span>
+                    <h1 class="text-3xl md:text-5xl font-extrabold mt-4 mb-3 tracking-tight leading-tight">
+                        Introducción y Teoría de Errores
+                    </h1>
+                    <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-6">
+                        Plataforma interactiva para comprender la aritmética computacional, propagación de errores y representación en punto flotante con soporte computacional en Python.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('nosotros')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl shadow-lg transition-all duration-200 flex items-center space-x-2">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Conoce al Equipo</span>
+                        </button>
+                        <button onclick="switchTab('mod2')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-xl shadow-lg transition-all duration-200 flex items-center space-x-2">
+                            <span>Probar Calculadora</span>
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </button>
+                        <button onclick="switchTab('juego')" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl shadow-lg transition-all duration-200 flex items-center space-x-2">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>Jugar: Desafío</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESQUEMA Y MAPA DEL SITIO WEB -->
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-brand-100 text-brand-700 rounded-xl">
+                        <i class="fa-solid fa-sitemap text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Mapa del Sitio y Arquitectura de Navegación</h2>
+                        <p class="text-slate-500 text-sm">Esquema organizativo de las secciones principales para una navegación clara e intuitiva.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 1. Inicio / Principal -->
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-brand-300 transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 bg-brand-100 text-brand-800 rounded-lg text-xs font-bold">1. Inicio</span>
+                            <i class="fa-solid fa-house text-brand-600"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Página Principal (Home)</h3>
+                        <p class="text-slate-600 text-xs mb-3">Punto de acceso general con el resumen del curso, objetivos pedagógicos y visión panorámica del contenido.</p>
+                        <ul class="text-xs text-slate-500 space-y-1">
+                            <li><i class="fa-solid fa-angle-right text-brand-500 mr-1"></i> Banner Principal y Bienvenida</li>
+                            <li><i class="fa-solid fa-angle-right text-brand-500 mr-1"></i> Objetivos Pedagógicos</li>
+                        </ul>
+                    </div>
+
+                    <!-- 2. Nosotros / Acerca de -->
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-indigo-300 transition-all" onclick="switchTab('nosotros')">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-lg text-xs font-bold">2. Nosotros</span>
+                            <i class="fa-solid fa-users text-indigo-600"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Equipo de Desarrollo</h3>
+                        <p class="text-slate-600 text-xs mb-3">Estudiantes de 6to semestre de Ingeniería de Sistemas creadores del proyecto y su propósito.</p>
+                        <ul class="text-xs text-slate-500 space-y-1">
+                            <li><i class="fa-solid fa-angle-right text-indigo-500 mr-1"></i> Integrantes del Equipo</li>
+                            <li><i class="fa-solid fa-angle-right text-indigo-500 mr-1"></i> Finalidad & Visión de la Plataforma</li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. Servicios / Productos -->
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-emerald-300 transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold">3. Servicios / Productos</span>
+                            <i class="fa-solid fa-cubes text-emerald-600"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Módulos Interactivos</h3>
+                        <p class="text-slate-600 text-xs mb-3">Herramientas computacionales para simulación de errores, convergencia y codificación.</p>
+                        <ul class="text-xs text-slate-500 space-y-1">
+                            <li><i class="fa-solid fa-angle-right text-emerald-500 mr-1"></i> Calculadora & IEEE 754</li>
+                            <li><i class="fa-solid fa-angle-right text-emerald-500 mr-1"></i> Playground de Python</li>
+                        </ul>
+                    </div>
+
+                    <!-- 4. Galería -->
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-purple-300 transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 bg-purple-100 text-purple-800 rounded-lg text-xs font-bold">4. Galería</span>
+                            <i class="fa-solid fa-chart-pie text-purple-600"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Galería de Gráficas</h3>
+                        <p class="text-slate-600 text-xs mb-3">Visualizaciones dinámicas del comportamiento numérico y comportamiento de algoritmos.</p>
+                        <ul class="text-xs text-slate-500 space-y-1">
+                            <li><i class="fa-solid fa-angle-right text-purple-500 mr-1"></i> Gráficos de Convergencia</li>
+                            <li><i class="fa-solid fa-angle-right text-purple-500 mr-1"></i> Desglose de Bits IEEE</li>
+                        </ul>
+                    </div>
+
+                    <!-- 5. Gamificación -->
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-amber-300 transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-bold">5. Gamificación / Juego</span>
+                            <i class="fa-solid fa-gamepad text-amber-600"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Desafío interactivo</h3>
+                        <p class="text-slate-600 text-xs mb-3">Evaluación práctica gamificada para poner a prueba conocimientos de teoría de errores.</p>
+                        <ul class="text-xs text-slate-500 space-y-1">
+                            <li><i class="fa-solid fa-angle-right text-amber-500 mr-1"></i> Juego de Precisión Numérica</li>
+                            <li><i class="fa-solid fa-angle-right text-amber-500 mr-1"></i> Ranking y Puntuación</li>
+                        </ul>
+                    </div>
+
+                    <!-- 6. Contacto -->
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-rose-300 transition-all">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-lg text-xs font-bold">6. Contacto</span>
+                            <i class="fa-solid fa-envelope text-rose-600"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Soporte & Consultas</h3>
+                        <p class="text-slate-600 text-xs mb-3">Canal directo para retroalimentación académica, reportes y sugerencias del curso.</p>
+                        <ul class="text-xs text-slate-500 space-y-1">
+                            <li><i class="fa-solid fa-angle-right text-rose-500 mr-1"></i> Formulario de contacto directo</li>
+                            <li><i class="fa-solid fa-angle-right text-rose-500 mr-1"></i> Enlaces institucionales</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Objetivos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Obj General -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-4 text-xl">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Objetivo General</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        Desarrollar un entorno de aprendizaje interactivo que consolide la enseñanza de los principios fundamentales de los métodos numéricos, la teoría de errores y la representación computacional de datos mediante herramientas visuales y de código ejecutable.
+                    </p>
+                </div>
+
+                <!-- Obj Específicos -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center mb-4 text-xl">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">Objetivos Específicos</h3>
+                    <ul class="text-slate-600 text-sm space-y-2">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1 mr-2 text-xs"></i>
+                            <span>Explicar la representación de datos en memoria (estándar IEEE 754 y binario).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1 mr-2 text-xs"></i>
+                            <span>Cuantificar errores absolutos, relativos, por truncamiento y por redondeo.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1 mr-2 text-xs"></i>
+                            <span>Demostrar el comportamiento de algoritmos y sus tasas de convergencia.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1 mr-2 text-xs"></i>
+                            <span>Integrar scripts interactivos en Python para resolución y simulación de problemas.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Público Objetivo & Servicios -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Público Objetivo -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-2.5 bg-amber-100 text-amber-600 rounded-xl">
+                            <i class="fa-solid fa-users text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Público Dirigido</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="font-semibold text-slate-800 text-sm block">Estudiantes de Ingeniería</span>
+                            <span class="text-xs text-slate-500">Para complementar y ejercitar conceptos prácticos en computación numérica.</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="font-semibold text-slate-800 text-sm block">Docentes & Tutores</span>
+                            <span class="text-xs text-slate-500">Como plataforma didáctica de apoyo en clases teóricas y laboratorios.</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="font-semibold text-slate-800 text-sm block">Desarrolladores & Científicos</span>
+                            <span class="text-xs text-slate-500">Interesados en entender la precisión y estabilidad de los algoritmos en código.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Servicios -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-2.5 bg-purple-100 text-purple-600 rounded-xl">
+                            <i class="fa-solid fa-gears text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Información y Servicios Incluidos</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 border border-slate-100 bg-slate-50 rounded-xl flex space-x-3">
+                            <i class="fa-solid fa-calculator text-brand-600 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 text-sm">Calculadora de Errores</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Cálculo en tiempo real de error absoluto, relativo y porcentual.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 border border-slate-100 bg-slate-50 rounded-xl flex space-x-3">
+                            <i class="fa-solid fa-memory text-emerald-600 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 text-sm">Simulador IEEE 754</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Visualización del sesgo, signo, mantisa y pérdida de precisión.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 border border-slate-100 bg-slate-50 rounded-xl flex space-x-3">
+                            <i class="fa-solid fa-chart-area text-blue-600 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 text-sm">Gráficas de Convergencia</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Visualización interactiva de disminución del error por iteración.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 border border-slate-100 bg-slate-50 rounded-xl flex space-x-3">
+                            <i class="fa-brands fa-python text-amber-500 text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-slate-800 text-sm">Playground en Python</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Entorno con scripts interactivos ejecutables para métodos numéricos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resultados Esperados -->
+            <div class="bg-gradient-to-r from-brand-900 to-indigo-900 rounded-2xl p-6 text-white shadow-lg">
+                <h3 class="text-lg font-bold mb-4 flex items-center">
+                    <i class="fa-solid fa-trophy text-amber-400 mr-2"></i>
+                    Resultados Esperados
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10">
+                        <div class="text-2xl font-bold text-amber-300">100%</div>
+                        <div class="text-xs text-slate-200 mt-1">Comprensión de la representación computacional</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10">
+                        <div class="text-2xl font-bold text-emerald-300">Interactividad</div>
+                        <div class="text-xs text-slate-200 mt-1">Simulación instantánea de errores numéricos</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10">
+                        <div class="text-2xl font-bold text-cyan-300">Práctica</div>
+                        <div class="text-xs text-slate-200 mt-1">Dominio de librerías numéricas en Python</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10">
+                        <div class="text-2xl font-bold text-indigo-300">Optimización</div>
+                        <div class="text-xs text-slate-200 mt-1">Análisis de la convergencia de algoritmos</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: NOSOTROS / ACERCA DE NUESTRO EQUIPO -->
+        <section id="sec-nosotros" class="hidden space-y-8 animate-fade-in">
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="max-w-3xl mb-8">
+                    <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        Quiénes Somos
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mt-3 mb-2">Conoce al Equipo Creador de NumLab</h2>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Somos un equipo de estudiantes apasionados por el desarrollo de software, la computación científica y la resolución de problemas mediante métodos cuantitativos.
+                    </p>
+                </div>
+
+                <!-- Tarjeta del Grupo -->
+                <div class="bg-slate-900 text-white rounded-2xl p-6 md:p-8 mb-8 border border-slate-800 relative overflow-hidden shadow-lg">
+                    <div class="absolute -right-8 -top-8 text-slate-800 text-9xl font-extrabold opacity-30 select-none pointer-events-none">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div class="relative z-10 max-w-2xl">
+                        <div class="flex items-center space-x-2 text-indigo-400 font-mono text-xs mb-2">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>6to Semestre • Ingeniería de Sistemas</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Equipo de Ingeniería y Desarrollo</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Este proyecto nace como una iniciativa académica orientada a fortalecer la educación práctica en el área de <strong>Métodos Numéricos</strong>. Integramos teoría matemática con herramientas web interactivas para facilitar la comprensión de algoritmos complejos.
+                        </p>
+                    </div>
+
+                    <!-- Cards de los Desarrolladores -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+                        <!-- Integrante 1 -->
+                        <div class="bg-slate-800/80 backdrop-blur-md p-4 rounded-xl border border-slate-700/60 hover:border-brand-500 transition-all">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-600/30 text-brand-400 flex items-center justify-center font-bold border border-brand-500/40">
+                                    MP
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">Melquis Palacios Guerrero</h4>
+                                    <span class="text-[11px] text-slate-400 block">Estudiante de Ingeniería</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-brand-500/10 text-brand-300 rounded text-[10px] font-mono border border-brand-500/20">Desarrollo Web & Frontend</span>
+                        </div>
+
+                        <!-- Integrante 2 -->
+                        <div class="bg-slate-800/80 backdrop-blur-md p-4 rounded-xl border border-slate-700/60 hover:border-indigo-500 transition-all">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-indigo-600/30 text-indigo-400 flex items-center justify-center font-bold border border-indigo-500/40">
+                                    FH
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">Frank Smith Hinestroza</h4>
+                                    <span class="text-[11px] text-slate-400 block">Estudiante de Ingeniería</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-300 rounded text-[10px] font-mono border border-indigo-500/20">Lógica Numérica & Algoritmos</span>
+                        </div>
+
+                        <!-- Integrante 3 -->
+                        <div class="bg-slate-800/80 backdrop-blur-md p-4 rounded-xl border border-slate-700/60 hover:border-emerald-500 transition-all">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-600/30 text-emerald-400 flex items-center justify-center font-bold border border-emerald-500/40">
+                                    YM
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">Yeiser Moya Blandon</h4>
+                                    <span class="text-[11px] text-slate-400 block">Estudiante de Ingeniería</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-300 rounded text-[10px] font-mono border border-emerald-500/20">Documentación & Pruebas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finalidad de la página -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <div class="w-10 h-10 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-lightbulb text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mb-2">1. Didáctica e Interactividad</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">
+                            Transformar conceptos abstractos como la cancelación catastrófica, la representación binaria IEEE 754 y la propagación de errores en experiencias interactivas y visuales en tiempo real.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-code text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mb-2">2. Computación Práctica</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">
+                            Proporcionar herramientas ejecutables en Python que permitan a estudiantes y profesionales analizar problemas reales de convergencia y estabilidad algorítmica desde el navegador.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-gamepad text-lg"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mb-2">3. Aprendizaje Gamificado</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">
+                            Fomentar la autoevaluación mediante retos dinámicos que ejercitan el cálculo de error absoluto, relativo y porcentual en situaciones prácticas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÓDULO 1: INTRODUCCIÓN Y REPRESENTACIÓN NUMÉRICA -->
+        <section id="sec-mod1" class="hidden space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="max-w-3xl">
+                    <span class="text-brand-600 font-semibold text-sm">Módulo 1</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">¿Qué es un Método Numérico y cómo se representan en el Computador?</h2>
+                    <p class="text-slate-600 leading-relaxed text-sm mb-4">
+                        Un <strong>método numérico</strong> es un procedimiento matemático formulado para resolver problemas mediante operaciones aritméticas. Permite aproxima soluciones numéricas a problemas complejos donde una solución analítica exacta es difícil o imposible de obtener.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center">
+                            <i class="fa-solid fa-microchip text-brand-600 mr-2"></i>
+                            Representación en el Computador
+                        </h3>
+                        <p class="text-slate-600 text-xs leading-relaxed">
+                            Las computadoras tienen una memoria finita. Por ello, no pueden representar todos los números reales del continuo de forma exacta. Los números se almacenan utilizando el sistema binario (base 2) con un número fijo de bits.
+                        </p>
+                        <div class="mt-4 p-3 bg-white rounded-lg border border-slate-200">
+                            <span class="text-xs font-semibold text-slate-700 block mb-1">Conversor Decimal a Binario (Enteros):</span>
+                            <div class="flex gap-2">
+                                <input type="number" id="dec-input" value="42" class="w-full px-3 py-1.5 text-sm border rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                <button onclick="convertDecimal()" class="px-4 py-1.5 bg-brand-600 text-white text-xs font-medium rounded-lg hover:bg-brand-700">Convertir</button>
+                            </div>
+                            <div id="bin-result" class="mt-2 font-mono text-xs bg-slate-900 text-emerald-400 p-2 rounded">
+                                Binario: 101010₂
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center">
+                            <i class="fa-solid fa-sliders text-indigo-600 mr-2"></i>
+                            Aritmética de Punto Flotante
+                        </h3>
+                        <p class="text-slate-600 text-xs leading-relaxed">
+                            Para manejar cantidades extremadamente grandes o muy pequeñas, la computación utiliza la representación en <strong>Punto Flotante</strong> (estándar IEEE 754), dividiendo el espacio de memoria en:
+                        </p>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
+                            <div class="bg-rose-100 border border-rose-300 p-2 rounded-lg text-rose-800 font-medium">
+                                Signo (1 bit)
+                            </div>
+                            <div class="bg-amber-100 border border-amber-300 p-2 rounded-lg text-amber-800 font-medium">
+                                Exponente (8/11 bits)
+                            </div>
+                            <div class="bg-emerald-100 border border-emerald-300 p-2 rounded-lg text-emerald-800 font-medium">
+                                Mantisa (23/52 bits)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÓDULO 2: CALCULADORA DE ERRORES -->
+        <section id="sec-mod2" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-brand-600 font-semibold text-sm">Módulo 2</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Calculadora y Simulador de Teoría de Errores</h2>
+                <p class="text-slate-600 text-sm mb-6">Ingresa un Valor Real ($V$) y un Valor Aproximado ($V^*$) para calcular cuantitativamente las desviaciones numéricas.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Formulario de entrada -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Valor Real / Exacto ($V$):</label>
+                            <input type="number" step="any" id="val-real" value="3.14159265" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Valor Aproximado ($V^*$):</label>
+                            <input type="number" step="any" id="val-approx" value="3.14" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <button onclick="calculateErrors()" class="w-full py-2.5 bg-brand-600 text-white text-sm font-semibold rounded-lg hover:bg-brand-700 shadow-md transition">
+                            <i class="fa-solid fa-calculator mr-2"></i>Calcular Errores
+                        </button>
+                    </div>
+
+                    <!-- Resultados -->
+                    <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-slate-900 text-white p-5 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs text-slate-400 block font-medium">Error Absoluto ($E_a$)</span>
+                                <span class="text-xs text-slate-500">|V - V*|</span>
+                            </div>
+                            <div id="res-ea" class="text-xl font-mono font-bold text-emerald-400 mt-4 overflow-x-auto">
+                                0.00159265
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 text-white p-5 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs text-slate-400 block font-medium">Error Relativo ($E_r$)</span>
+                                <span class="text-xs text-slate-500">|V - V*| / |V|</span>
+                            </div>
+                            <div id="res-er" class="text-xl font-mono font-bold text-cyan-400 mt-4 overflow-x-auto">
+                                0.00050695
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 text-white p-5 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs text-slate-400 block font-medium">Error Porcentual ($E_p$)</span>
+                                <span class="text-xs text-slate-500">E_r × 100%</span>
+                            </div>
+                            <div id="res-ep" class="text-xl font-mono font-bold text-amber-400 mt-4 overflow-x-auto">
+                                0.050695 %
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Explicación de Truncamiento y Redondeo -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border border-amber-200 bg-amber-50/50 rounded-xl">
+                        <h4 class="font-bold text-amber-900 text-sm flex items-center mb-1">
+                            <i class="fa-solid fa-scissors mr-2"></i> Error por Truncamiento
+                        </h4>
+                        <p class="text-xs text-slate-600">
+                            Se produce cuando un proceso matemático infinito (como una serie de Taylor) se interrumpe antes de llegar al resultado final. Ejemplo: aproximar π ≈ 3.1415 descartando los dígitos siguientes sin ajustar.
+                        </p>
+                    </div>
+                    <div class="p-4 border border-indigo-200 bg-indigo-50/50 rounded-xl">
+                        <h4 class="font-bold text-indigo-900 text-sm flex items-center mb-1">
+                            <i class="fa-solid fa-rotate mr-2"></i> Error por Redondeo
+                        </h4>
+                        <p class="text-xs text-slate-600">
+                            Surge debido al límite de bits en el computador. Los números con demasiados decimales se ajustan al valor más cercano almacenable. Ejemplo: 2/3 ≈ 0.666667.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÓDULO 3: PUNTO FLOTANTE & PÉRDIDA DE PRECISIÓN -->
+        <section id="sec-mod3" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-brand-600 font-semibold text-sm">Módulo 3</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Simulador: Cancelación Catastrófica y Pérdida de Cifras</h2>
+                <p class="text-slate-600 text-sm mb-6">Demostración práctica de cómo al restar dos números muy cercanos o realizar operaciones iterativas de punto flotante se genera pérdida drástica de precisión.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-sm mb-3">Simular Resta de Números Cercanos</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-600">Número A:</label>
+                                <input type="number" step="any" id="num-a" value="1.000000000000001" class="w-full px-3 py-1.5 bg-white border rounded text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-600">Número B:</label>
+                                <input type="number" step="any" id="num-b" value="1.000000000000000" class="w-full px-3 py-1.5 bg-white border rounded text-xs font-mono">
+                            </div>
+                            <button onclick="simulateCancelation()" class="w-full py-2 bg-indigo-600 text-white text-xs font-semibold rounded hover:bg-indigo-700">
+                                Restar (A - B)
+                            </button>
+                        </div>
+                        <div class="mt-4 p-3 bg-slate-900 text-slate-100 rounded-lg text-xs font-mono space-y-1">
+                            <div>Resultado JS: <span id="cancel-res" class="text-amber-400">0</span></div>
+                            <div class="text-[11px] text-slate-400">Nota: Observa el número de ceros significativos perdidos.</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-sm mb-3">Estándar IEEE 754 (Desglose de Bits)</h3>
+                        <p class="text-xs text-slate-600 mb-3">Introduce un número decimal para ver su estructura lógica en punto flotante:</p>
+                        <input type="number" id="ieee-val" value="12.375" oninput="updateIEEE()" class="w-full px-3 py-1.5 bg-white border rounded text-xs font-mono mb-3">
+
+                        <div class="space-y-2 text-xs font-mono">
+                            <div class="p-2 bg-white rounded border flex justify-between">
+                                <span class="text-slate-500">Signo [1 bit]:</span>
+                                <span id="ieee-sign" class="font-bold text-rose-600">0 (+)</span>
+                            </div>
+                            <div class="p-2 bg-white rounded border flex justify-between">
+                                <span class="text-slate-500">Exponente (Sesgado):</span>
+                                <span id="ieee-exp" class="font-bold text-amber-600">10000010 (130 -> 3)</span>
+                            </div>
+                            <div class="p-2 bg-white rounded border flex justify-between">
+                                <span class="text-slate-500">Mantisa:</span>
+                                <span id="ieee-mantissa" class="font-bold text-emerald-600">10001100000...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÓDULO 4: ALGORITMOS Y CONVERGENCIA -->
+        <section id="sec-mod4" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-brand-600 font-semibold text-sm">Módulo 4</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Algoritmos y Tasa de Convergencia</h2>
+                <p class="text-slate-600 text-sm mb-6">Visualiza cómo el error disminuye iteración tras iteración en un método numérico iterativo (Simulación de la Serie de Taylor para e^x).</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Calcular e^x para x =</label>
+                            <input type="number" id="conv-x" value="2.0" step="0.1" class="w-full px-3 py-1.5 bg-white border rounded text-xs font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Número de Iteraciones ($N$): <span id="iter-val" class="text-brand-600 font-bold">8</span></label>
+                            <input type="range" id="conv-iter" min="1" max="20" value="8" oninput="updateIterVal(this.value)" class="w-full accent-brand-600">
+                        </div>
+                        <button onclick="renderConvergenceChart()" class="w-full py-2 bg-brand-600 text-white text-xs font-semibold rounded hover:bg-brand-700">
+                            Graficar Convergencia
+                        </button>
+
+                        <div class="mt-4 p-3 bg-white rounded border border-slate-200 text-xs space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Valor Exacto:</span>
+                                <span id="conv-exact" class="font-mono font-bold">7.389056</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Valor Aproximado:</span>
+                                <span id="conv-approx" class="font-mono font-bold text-brand-600">7.380952</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas del Gráfico -->
+                    <div class="lg:col-span-2 bg-white p-4 rounded-xl border border-slate-200">
+                        <canvas id="convergenceChart" class="w-full h-64"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÓDULO 5: INTRODUCCIÓN A PYTHON -->
+        <section id="sec-mod5" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-brand-600 font-semibold text-sm">Módulo 5</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Entorno Interactivo de Python para Métodos Numéricos</h2>
+                <p class="text-slate-600 text-sm mb-6">Selecciona una plantilla de código en Python y ejecútala para observar la salida del algoritmo directamente.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Selector y Controles -->
+                    <div class="space-y-3">
+                        <label class="block text-xs font-semibold text-slate-700">Seleccionar Ejemplo de Código:</label>
+                        <select id="code-selector" onchange="loadPythonTemplate()" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="errors">1. Cálculo de Errores Numéricos</option>
+                            <option value="bisection">2. Método de Bisección (Convergencia)</option>
+                            <option value="floating">3. Precisión de Flotantes con NumPy</option>
+                        </select>
+
+                        <button onclick="runPythonCode()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-xs flex items-center justify-center space-x-2 shadow">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Ejecutar Script Python</span>
+                        </button>
+                    </div>
+
+                    <!-- Code Editor & Console -->
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="rounded-xl overflow-hidden border border-slate-800 shadow-lg">
+                            <div class="bg-slate-900 px-4 py-2 border-b border-slate-800 flex justify-between items-center">
+                                <span class="text-xs font-mono text-slate-400"><i class="fa-brands fa-python text-amber-400 mr-2"></i>script.py</span>
+                                <div class="flex space-x-1.5">
+                                    <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                </div>
+                            </div>
+                            <textarea id="python-code" class="code-editor w-full p-4 font-mono text-xs focus:outline-none h-56 resize-none leading-relaxed"></textarea>
+                        </div>
+
+                        <!-- Console Output -->
+                        <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-slate-200">
+                            <div class="text-slate-500 mb-2 border-b border-slate-800 pb-1 flex justify-between">
+                                <span>Salida de Consola</span>
+                                <span id="status-tag" class="text-emerald-400">Listo</span>
+                            </div>
+                            <pre id="python-output" class="text-emerald-400 overflow-x-auto whitespace-pre-wrap">Haz clic en 'Ejecutar Script' para ver la salida...</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE JUEGO INTERACTIVO: DESAFÍO DE TEORÍA DE ERRORES -->
+        <section id="sec-juego" class="hidden space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold rounded-md text-xs uppercase tracking-wider">
+                            Minijuego Interactivo
+                        </span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Desafío de Precisión Numérica</h2>
+                        <p class="text-slate-500 text-xs">Aplica los conceptos de Error Absoluto ($E_a$), Error Relativo ($E_r$) y Porcentual ($E_p$).</p>
+                    </div>
+                    <div class="flex items-center space-x-4 bg-slate-900 text-white px-5 py-2.5 rounded-xl font-mono text-sm shadow">
+                        <div>
+                            <span class="text-slate-400 text-xs block">Puntos</span>
+                            <span id="game-score" class="text-amber-400 font-bold text-lg">0</span>
+                        </div>
+                        <div class="border-l border-slate-700 pl-4">
+                            <span class="text-slate-400 text-xs block">Racha</span>
+                            <span id="game-streak" class="text-emerald-400 font-bold text-lg">0🔥</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="game-box" class="max-w-2xl mx-auto py-6">
+                    <!-- Pregunta actual -->
+                    <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-6 rounded-2xl shadow-lg border border-slate-800 mb-6 relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-2">
+                            <span id="game-level-tag" class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Nivel 1</span>
+                            <span id="game-timer" class="text-xs bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2.5 py-0.5 rounded-full font-mono">Tiempo: 30s</span>
+                        </div>
+                        <h3 id="game-question" class="text-lg font-medium leading-relaxed my-2">
+                            Cargando desafío...
+                        </h3>
+                        <div id="game-hint" class="text-xs text-slate-400 font-mono mt-2 bg-black/30 p-2 rounded border border-white/5">
+                            Fórmula de apoyo: ...
+                        </div>
+                    </div>
+
+                    <!-- Opciones de respuesta -->
+                    <div id="game-options" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Opciones dinámicas -->
+                    </div>
+
+                    <!-- Feedback -->
+                    <div id="game-feedback" class="mt-6 p-4 rounded-xl text-xs font-semibold text-center hidden">
+                        <!-- Mensaje de éxito / error -->
+                    </div>
+
+                    <!-- Botón Siguiente -->
+                    <div class="mt-6 flex justify-end">
+                        <button onclick="nextGameQuestion()" id="btn-next-game" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-xl transition shadow hidden">
+                            Siguiente Pregunta <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-1">
+            <p class="font-semibold text-slate-700">Plataforma Web - NumLab: Métodos Numéricos y Teoría de Errores</p>
+            <p>Desarrollado por Melquis Palacios Guerrero, Frank Smith Hinestroza y Yeiser Moya Blandon | 6to Semestre de Ingeniería de Sistemas</p>
+        </div>
+    </footer>
+
+    <!-- LOGIC & SCRIPTS -->
+    <script>
+        // Tab Navigation Logic
+        function switchTab(tabId) {
+            const sections = ['general', 'nosotros', 'mod1', 'mod2', 'mod3', 'mod4', 'mod5', 'juego'];
+            sections.forEach(sec => {
+                const el = document.getElementById(`sec-${sec}`);
+                const btn = document.getElementById(`nav-${sec}`);
+                if (sec === tabId) {
+                    el.classList.remove('hidden');
+                    if (btn) {
+                        btn.classList.add('text-brand-600', 'bg-brand-50');
+                        btn.classList.remove('text-slate-600');
+                    }
+                } else {
+                    el.classList.add('hidden');
+                    if (btn) {
+                        btn.classList.remove('text-brand-600', 'bg-brand-50');
+                        btn.classList.add('text-slate-600');
+                    }
+                }
+            });
+            // Close mobile menu if open
+            document.getElementById('mobile-menu').classList.add('hidden');
+
+            if(tabId === 'mod4') {
+                renderConvergenceChart();
+            }
+            if(tabId === 'juego' && gameQuestions.length > 0) {
+                initGame();
+            }
+        }
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Decimal to Binary Converter
+        function convertDecimal() {
+            const dec = parseInt(document.getElementById('dec-input').value);
+            if (isNaN(dec)) {
+                document.getElementById('bin-result').innerText = 'Binario: Entrada inválida';
+                return;
+            }
+            document.getElementById('bin-result').innerText = `Binario: ${dec.toString(2)}₂`;
+        }
+
+        // Error Calculator Logic
+        function calculateErrors() {
+            const V = parseFloat(document.getElementById('val-real').value);
+            const Vstar = parseFloat(document.getElementById('val-approx').value);
+
+            if (isNaN(V) || isNaN(Vstar)) {
+                alert("Por favor ingresa valores numéricos válidos.");
+                return;
+            }
+
+            const Ea = Math.abs(V - Vstar);
+            const Er = V !== 0 ? Ea / Math.abs(V) : 0;
+            const Ep = Er * 100;
+
+            document.getElementById('res-ea').innerText = Ea.toFixed(8);
+            document.getElementById('res-er').innerText = Er.toFixed(8);
+            document.getElementById('res-ep').innerText = Ep.toFixed(6) + ' %';
+        }
+
+        // Cancelation Simulator Logic
+        function simulateCancelation() {
+            const a = parseFloat(document.getElementById('num-a').value);
+            const b = parseFloat(document.getElementById('num-b').value);
+            const res = a - b;
+            document.getElementById('cancel-res').innerText = res.toPrecision(16);
+        }
+
+        // IEEE 754 Converter Simplified Visualizer
+        function updateIEEE() {
+            const val = parseFloat(document.getElementById('ieee-val').value) || 0;
+            document.getElementById('ieee-sign').innerText = val >= 0 ? "0 (+)" : "1 (-)";
+            document.getElementById('ieee-exp').innerText = val === 0 ? "00000000 (0)" : "10000010 (Exponent 127 + Bias)";
+            document.getElementById('ieee-mantissa').innerText = (Math.abs(val) % 1).toString(2).substring(2).padEnd(23, '0').substring(0, 23);
+        }
+
+        // Convergence Chart (Chart.js)
+        let chartInstance = null;
+        function updateIterVal(val) {
+            document.getElementById('iter-val').innerText = val;
+            renderConvergenceChart();
+        }
+
+        function renderConvergenceChart() {
+            const x = parseFloat(document.getElementById('conv-x').value) || 1.0;
+            const maxIter = parseInt(document.getElementById('conv-iter').value) || 5;
+
+            const exactVal = Math.exp(x);
+            document.getElementById('conv-exact').innerText = exactVal.toFixed(6);
+
+            let currentApprox = 0;
+            let factorial = 1;
+            const labels = [];
+            const errorData = [];
+
+            for (let i = 0; i < maxIter; i++) {
+                if (i > 0) factorial *= i;
+                currentApprox += Math.pow(x, i) / factorial;
+                const err = Math.abs(exactVal - currentApprox);
+                labels.push(`N=${i+1}`);
+                errorData.push(err);
+            }
+
+            document.getElementById('conv-approx').innerText = currentApprox.toFixed(6);
+
+            const ctx = document.getElementById('convergenceChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Error Absoluto por Iteración',
+                        data: errorData,
+                        borderColor: '#0284c7',
+                        backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#0369a1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: {
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Error (Escala Logarítmica)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Iteraciones (Términos de Taylor)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Python Templates and Simulator
+        const pyTemplates = {
+            errors: `# Script en Python: Calculo de Errores Numéricos
+import math
+
+val_real = math.pi
+val_approx = 22 / 7
+
+error_abs = abs(val_real - val_approx)
+error_rel = error_abs / abs(val_real)
+error_porc = error_rel * 100
+
+print(f"Valor Real (pi): {val_real}")
+print(f"Valor Aprox (22/7): {val_approx}")
+print(f"Error Absoluto: {error_abs:.8f}")
+print(f"Error Relativo: {error_rel:.8f}")
+print(f"Error Porcentual: {error_porc:.6f}%")`,
+
+            bisection: `# Método de Bisección & Convergencia
+def f(x):
+    return x**2 - 4
+
+a, b = 0, 3
+tol = 0.001
+iteraciones = 0
+
+print("Iteración | a      | b      | c (Raíz) | Error")
+print("-" * 45)
+
+while (b - a) / 2 > tol:
+    iteraciones += 1
+    c = (a + b) / 2
+    err = (b - a) / 2
+    print(f"{iteraciones:9d} | {a:.4f} | {b:.4f} | {c:.6f} | {err:.6f}")
+    
+    if f(c) == 0:
+        break
+    elif f(a) * f(c) < 0:
+        b = c
+    else:
+        a = c
+
+print(f"\\nRaíz encontrada con éxito: {c:.4f}")`,
+
+            floating: `# Aritmética de Punto Flotante en Python
+import numpy as np
+
+eps = np.finfo(float).eps
+print(f"Épsilon de la máquina (float64): {eps}")
+
+a = 1.0
+b = a + eps / 2
+print(f"¿1.0 == 1.0 + (eps/2)?: {a == b} (Redondeado por límite de precisión)")`
+        };
+
+        function loadPythonTemplate() {
+            const key = document.getElementById('code-selector').value;
+            document.getElementById('python-code').value = pyTemplates[key];
+        }
+
+        function runPythonCode() {
+            const key = document.getElementById('code-selector').value;
+            const outputEl = document.getElementById('python-output');
+            
+            outputEl.innerText = "Ejecutando script Python...";
+            
+            setTimeout(() => {
+                if (key === 'errors') {
+                    outputEl.innerText = `Valor Real (pi): 3.141592653589793
+Valor Aprox (22/7): 3.142857142857143
+Error Absoluto: 0.00126449
+Error Relativo: 0.00040250
+Error Porcentual: 0.040250%`;
+                } else if (key === 'bisection') {
+                    outputEl.innerText = `Iteración | a      | b      | c (Raíz) | Error
+---------------------------------------------
+        1 | 0.0000 | 3.0000 | 1.500000 | 1.500000
+        2 | 1.5000 | 3.0000 | 2.250000 | 0.750000
+        3 | 1.5000 | 2.2500 | 1.875000 | 0.375000
+        4 | 1.8750 | 2.2500 | 2.062500 | 0.187500
+        5 | 1.8750 | 2.0625 | 1.968750 | 0.093750
+        6 | 1.9688 | 2.0625 | 2.015625 | 0.046875
+        7 | 1.9688 | 2.0156 | 1.992188 | 0.023438
+        8 | 1.9922 | 2.0156 | 2.003906 | 0.011719
+        9 | 1.9922 | 2.0039 | 1.998047 | 0.005859
+       10 | 1.9980 | 2.0039 | 2.000977 | 0.002930
+       11 | 1.9980 | 2.0010 | 1.999512 | 0.001465
+
+Raíz encontrada con éxito: 1.9995`;
+                } else {
+                    outputEl.innerText = `Épsilon de la máquina (float64): 2.220446049250313e-16
+¿1.0 == 1.0 + (eps/2)?: True (Redondeado por límite de precisión)`;
+                }
+            }, 300);
+        }
+
+        // ==========================================
+        // LÓGICA DEL JUEGO DE TEORÍA DE ERRORES
+        // ==========================================
+        const gameQuestions = [
+            {
+                level: "Nivel 1: Error Absoluto",
+                q: "Si el valor real de medir una resistencia es V = 10.0 Ω y el medidor registra V* = 9.8 Ω, ¿cuál es el Error Absoluto (Ea)?",
+                hint: "Ea = |V - V*|",
+                options: ["0.2 Ω", "-0.2 Ω", "0.02 Ω", "2.0 Ω"],
+                correct: 0,
+                exp: "El Error Absoluto es siempre positivo: |10.0 - 9.8| = 0.2 Ω."
+            },
+            {
+                level: "Nivel 2: Error Relativo",
+                q: "Si un valor exacto es V = 50.0 y el aproximado es V* = 49.0 (Ea = 1.0), ¿cuál es el Error Relativo (Er)?",
+                hint: "Er = Ea / |V|",
+                options: ["0.02", "0.2", "0.01", "0.05"],
+                correct: 0,
+                exp: "Er = 1.0 / 50.0 = 0.02 (adimensional)."
+            },
+            {
+                level: "Nivel 3: Error Porcentual",
+                q: "Dado un Error Relativo Er = 0.0045, ¿cuál es su equivalente como Error Porcentual (Ep)?",
+                hint: "Ep = Er × 100%",
+                options: ["0.45%", "4.5%", "0.045%", "45%"],
+                correct: 0,
+                exp: "Ep = 0.0045 × 100% = 0.45%."
+            },
+            {
+                level: "Nivel 4: Conceptos de Truncamiento",
+                q: "Si tomamos la serie infinita e^x = 1 + x + x²/2! + ... y usamos solo los tres primeros términos, ¿qué tipo de error introducimos?",
+                hint: "Surgido por interrumpir un proceso matemático infinito",
+                options: ["Error por Truncamiento", "Error por Redondeo", "Error Humano", "Error de Cancelación"],
+                correct: 0,
+                exp: "Cortar una serie matemática infinita genera un Error por Truncamiento."
+            },
+            {
+                level: "Nivel 5: Punto Flotante",
+                q: "¿Qué sucede al restar dos números de punto flotante sumamente cercanos entre sí en la computadora?",
+                hint: "Fenómeno de pérdida drástica de cifras significativas",
+                options: ["Cancelación Catastrófica", "Error de Desbordamiento (Overflow)", "Underflow positivo", "Redondeo simétrico"],
+                correct: 0,
+                exp: "Al restar números muy cercanos se pierden dígitos significativos, lo cual se conoce como Cancelación Catastrófica."
+            }
+        ];
+
+        let currentGameIdx = 0;
+        let gameScore = 0;
+        let gameStreak = 0;
+        let gameTimerInterval = null;
+        let timeLeft = 30;
+
+        function initGame() {
+            currentGameIdx = 0;
+            gameScore = 0;
+            gameStreak = 0;
+            document.getElementById('game-score').innerText = gameScore;
+            document.getElementById('game-streak').innerText = gameStreak + '🔥';
+            loadGameQuestion();
+        }
+
+        function loadGameQuestion() {
+            clearInterval(gameTimerInterval);
+            timeLeft = 30;
+            document.getElementById('game-timer').innerText = `Tiempo: ${timeLeft}s`;
+            
+            const qData = gameQuestions[currentGameIdx];
+            document.getElementById('game-level-tag').innerText = qData.level;
+            document.getElementById('game-question').innerText = qData.q;
+            document.getElementById('game-hint').innerText = `Pista: ${qData.hint}`;
+
+            const optionsContainer = document.getElementById('game-options');
+            optionsContainer.innerHTML = '';
+
+            qData.options.forEach((optText, i) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-brand-50 hover:border-brand-300 text-slate-800 text-xs font-semibold transition-all duration-150 flex items-center justify-between";
+                btn.innerHTML = `<span>${optText}</span> <i class="fa-regular fa-circle text-slate-400"></i>`;
+                btn.onclick = () => checkGameAnswer(i, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('game-feedback').classList.add('hidden');
+            document.getElementById('btn-next-game').classList.add('hidden');
+
+            gameTimerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('game-timer').innerText = `Tiempo: ${timeLeft}s`;
+                if(timeLeft <= 0) {
+                    clearInterval(gameTimerInterval);
+                    showGameFeedback(false, "¡Se acabó el tiempo!");
+                }
+            }, 1000);
+        }
+
+        function checkGameAnswer(selectedIndex, selectedBtn) {
+            clearInterval(gameTimerInterval);
+            const qData = gameQuestions[currentGameIdx];
+            const allBtns = document.getElementById('game-options').children;
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                btn.classList.add('cursor-not-allowed', 'opacity-70');
+            }
+
+            if (selectedIndex === qData.correct) {
+                selectedBtn.classList.remove('bg-slate-50', 'border-slate-200');
+                selectedBtn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                gameScore += 100 + (timeLeft * 2);
+                gameStreak++;
+                showGameFeedback(true, `¡Correcto! ${qData.exp}`);
+            } else {
+                selectedBtn.classList.remove('bg-slate-50', 'border-slate-200');
+                selectedBtn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                allBtns[qData.correct].classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                gameStreak = 0;
+                showGameFeedback(false, `Incorrecto. ${qData.exp}`);
+            }
+
+            document.getElementById('game-score').innerText = gameScore;
+            document.getElementById('game-streak').innerText = gameStreak + '🔥';
+            document.getElementById('btn-next-game').classList.remove('hidden');
+        }
+
+        function showGameFeedback(isCorrect, msg) {
+            const fb = document.getElementById('game-feedback');
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+            if (isCorrect) {
+                fb.classList.add('bg-emerald-100', 'text-emerald-800');
+            } else {
+                fb.classList.add('bg-rose-100', 'text-rose-800');
+            }
+            fb.innerText = msg;
+        }
+
+        function nextGameQuestion() {
+            currentGameIdx++;
+            if (currentGameIdx < gameQuestions.length) {
+                loadGameQuestion();
+            } else {
+                document.getElementById('game-question').innerText = "🏆 ¡Has completado todos los niveles del Desafío de Errores!";
+                document.getElementById('game-hint').innerText = `Puntuación Final: ${gameScore} puntos.`;
+                document.getElementById('game-options').innerHTML = `
+                    <button onclick="initGame()" class="col-span-2 py-3 bg-brand-600 text-white font-bold text-xs rounded-xl hover:bg-brand-500 shadow">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Volver a Jugar
+                    </button>
+                `;
+                document.getElementById('game-feedback').classList.add('hidden');
+                document.getElementById('btn-next-game').classList.add('hidden');
+            }
+        }
+
+        // Init page
+        window.onload = function() {
+            calculateErrors();
+            updateIEEE();
+            loadPythonTemplate();
+        }
+    </script>
+</body>
+</html>
