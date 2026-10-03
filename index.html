@@ -42,7 +42,6 @@
             background-color: #0f172a;
             color: #f8fafc;
         }
-        /* Estilo para asegurar cursor por defecto en contenedores e interactivos genéricos */
         h1, h2, h3, h4, h5, h6, div, p, span {
             cursor: default;
         }
@@ -90,7 +89,10 @@
                         <i class="fa-brands fa-python mr-1.5"></i>Módulo 5: Python
                     </button>
                     <button onclick="switchTab('juego')" id="nav-juego" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-all duration-200">
-                        <i class="fa-solid fa-gamepad mr-1.5 text-amber-500"></i>Juego
+                        <i class="fa-solid fa-gamepad mr-1.5 text-amber-500"></i>Juego 1: Quiz
+                    </button>
+                    <button onclick="switchTab('juego2')" id="nav-juego2" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition-all duration-200">
+                        <i class="fa-solid fa-car-side mr-1.5 text-indigo-600"></i>Juego 2: Carrera Numérica
                     </button>
                 </nav>
 
@@ -112,7 +114,8 @@
             <button onclick="switchTab('mod3')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 3: Punto Flotante</button>
             <button onclick="switchTab('mod4')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 4: Convergencia</button>
             <button onclick="switchTab('mod5')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Módulo 5: Python</button>
-            <button onclick="switchTab('juego')" class="w-full text-left px-3 py-2 rounded-md text-base font-semibold text-amber-700 bg-amber-50"><i class="fa-solid fa-gamepad mr-2"></i>Juego: Desafío de Errores</button>
+            <button onclick="switchTab('juego')" class="w-full text-left px-3 py-2 rounded-md text-base font-semibold text-amber-700 bg-amber-50"><i class="fa-solid fa-gamepad mr-2"></i>Juego 1: Desafío de Errores</button>
+            <button onclick="switchTab('juego2')" class="w-full text-left px-3 py-2 rounded-md text-base font-semibold text-indigo-700 bg-indigo-50"><i class="fa-solid fa-car-side mr-2"></i>Juego 2: Carrera de Convergencia</button>
         </div>
     </header>
 
@@ -145,9 +148,9 @@
                             <span>Probar Calculadora</span>
                             <i class="fa-solid fa-arrow-right text-sm"></i>
                         </button>
-                        <button onclick="switchTab('juego')" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl shadow-lg transition-all duration-200 flex items-center space-x-2">
-                            <i class="fa-solid fa-gamepad"></i>
-                            <span>Jugar: Desafío</span>
+                        <button onclick="switchTab('juego2')" class="px-5 py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold rounded-xl shadow-lg transition-all duration-200 flex items-center space-x-2">
+                            <i class="fa-solid fa-car-side"></i>
+                            <span>Juego 2: Carrera Numérica</span>
                         </button>
                     </div>
                 </div>
@@ -223,16 +226,16 @@
                     </div>
 
                     <!-- 5. Gamificación -->
-                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-amber-300 transition-all">
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-indigo-300 transition-all">
                         <div class="flex items-center justify-between mb-3">
-                            <span class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-bold">5. Gamificación / Juego</span>
-                            <i class="fa-solid fa-gamepad text-amber-600"></i>
+                            <span class="px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-lg text-xs font-bold">5. Gamificación / Juegos</span>
+                            <i class="fa-solid fa-gamepad text-indigo-600"></i>
                         </div>
-                        <h3 class="font-bold text-slate-800 text-base mb-1">Desafío interactivo</h3>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Desafíos Interactivos</h3>
                         <p class="text-slate-600 text-xs mb-3">Evaluación práctica gamificada para poner a prueba conocimientos de teoría de errores.</p>
                         <ul class="text-xs text-slate-500 space-y-1">
-                            <li><i class="fa-solid fa-angle-right text-amber-500 mr-1"></i> Juego de Precisión Numérica</li>
-                            <li><i class="fa-solid fa-angle-right text-amber-500 mr-1"></i> Ranking y Puntuación</li>
+                            <li><i class="fa-solid fa-angle-right text-amber-500 mr-1"></i> Juego 1: Quiz de Precisión</li>
+                            <li><i class="fa-solid fa-angle-right text-indigo-500 mr-1"></i> Juego 2: Carrera de Convergencia 2D</li>
                         </ul>
                     </div>
 
@@ -775,13 +778,13 @@
             </div>
         </section>
 
-        <!-- SECCIÓN DE JUEGO INTERACTIVO: DESAFÍO DE TEORÍA DE ERRORES -->
+        <!-- SECCIÓN DE JUEGO 1: DESAFÍO DE TEORÍA DE ERRORES (QUIZ) -->
         <section id="sec-juego" class="hidden space-y-6">
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-100 pb-4">
                     <div>
                         <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold rounded-md text-xs uppercase tracking-wider">
-                            Minijuego Interactivo
+                            Minijuego Interactivo 1
                         </span>
                         <h2 class="text-2xl font-bold text-slate-900 mt-1">Desafío de Precisión Numérica</h2>
                         <p class="text-slate-500 text-xs">Aplica los conceptos de Error Absoluto ($E_a$), Error Relativo ($E_r$) y Porcentual ($E_p$).</p>
@@ -833,6 +836,140 @@
             </div>
         </section>
 
+        <!-- SECCIÓN DE JUEGO 2: CARRERA NUMÉRICA (CARRERA EN 2D CON MONEDAS E ITERACIONES REALES) -->
+        <section id="sec-juego2" class="hidden space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="px-2.5 py-1 bg-indigo-100 text-indigo-800 font-bold rounded-md text-xs uppercase tracking-wider">
+                            Minijuego 2: Arcade Numérico
+                        </span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Carrera de Convergencia 2D</h2>
+                        <p class="text-slate-500 text-xs">Conduce el carro, junta monedas de iteración para resolver $f(x) = x^3 - x - 2 = 0$ y esquiva conos para no perder vidas.</p>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <button onclick="restartRaceGame()" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center space-x-2">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            <span>Reiniciar Carrera / Nuevo Jugador</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- HUD Superior de Métricas de la Carrera -->
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-slate-900 text-white p-4 rounded-2xl shadow-md font-mono text-xs">
+                    <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                        <span class="text-slate-400 block text-[10px]">Método / Nivel</span>
+                        <span id="race-level-name" class="font-bold text-amber-400 text-sm">1. Bisección</span>
+                    </div>
+                    <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                        <span class="text-slate-400 block text-[10px]">Vidas</span>
+                        <span id="race-lives" class="font-bold text-rose-400 text-sm">❤️❤️❤️</span>
+                    </div>
+                    <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                        <span class="text-slate-400 block text-[10px]">Monedas (Iteración $N$)</span>
+                        <span id="race-coins" class="font-bold text-yellow-300 text-sm">0</span>
+                    </div>
+                    <div class="bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                        <span class="text-slate-400 block text-[10px]">Aproximación $x_n$</span>
+                        <span id="race-xn" class="font-bold text-cyan-300 text-sm">1.000000</span>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1 bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                        <span class="text-slate-400 block text-[10px]">Error Absoluto</span>
+                        <span id="race-error" class="font-bold text-emerald-400 text-sm">0.521380</span>
+                    </div>
+                </div>
+
+                <!-- Barra de Progreso del Error hacia Tol < 10^-6 -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-mono text-slate-600">
+                        <span>Progreso de Convergencia hacia Meta ($Error < 10^{-6}$):</span>
+                        <span id="race-progress-text" class="font-bold text-indigo-600">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden p-0.5">
+                        <div id="race-progress-bar" class="bg-indigo-600 h-full rounded-full transition-all duration-200" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- Canvas del Juego + Controles -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <div class="lg:col-span-2 flex flex-col items-center justify-center">
+                        <div class="relative rounded-2xl overflow-hidden border-4 border-slate-900 shadow-2xl bg-slate-950 max-w-full">
+                            <canvas id="raceCanvas" width="400" height="500" class="block cursor-pointer"></canvas>
+
+                            <!-- Overlay de Inicio / Game Over / Victoria -->
+                            <div id="race-overlay" class="absolute inset-0 bg-slate-950/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-white text-center">
+                                <h3 id="overlay-title" class="text-2xl font-black text-amber-400 mb-2">🏎️ Carrera de Convergencia</h3>
+                                <p id="overlay-desc" class="text-xs text-slate-300 mb-6 max-w-xs leading-relaxed">
+                                    Conduce esquivando conos con las flechas $\leftarrow$/$\rightarrow$ o teclas A/D. Cada moneda realiza una iteración matemática sobre $f(x)=x^3-x-2$. ¡Llega a la meta antes de perder las 3 vidas!
+                                </p>
+                                <button onclick="startRaceLevel()" id="btn-start-race" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg transition">
+                                    ¡Iniciar Carrera!
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Botones Táctiles para Móviles / Pantalla -->
+                        <div class="flex gap-4 mt-4 w-full max-w-xs justify-center">
+                            <button onclick="moveCarLeft()" class="flex-1 py-3 bg-slate-800 text-white font-bold rounded-xl active:bg-indigo-600 shadow flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button onclick="moveCarRight()" class="flex-1 py-3 bg-slate-800 text-white font-bold rounded-xl active:bg-indigo-600 shadow flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Panel Explicativo e Histórico de Resultados -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="border-b border-slate-200 pb-3">
+                            <h4 class="font-bold text-slate-900 text-sm flex items-center">
+                                <i class="fa-solid fa-graduation-cap text-indigo-600 mr-2"></i>
+                                Comportamiento Teórico
+                            </h4>
+                            <p class="text-xs text-slate-600 mt-1">
+                                Observa cómo cambia la velocidad de convergencia al pasar de nivel:
+                            </p>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 flex justify-between items-center">
+                                <span class="font-bold text-slate-700">1. Bisección:</span>
+                                <span class="text-slate-500 font-mono">Lenta ($\approx 19$ Monedas)</span>
+                            </div>
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 flex justify-between items-center">
+                                <span class="font-bold text-slate-700">2. Punto Fijo:</span>
+                                <span class="text-slate-500 font-mono">Lineal ($\approx 7$ Monedas)</span>
+                            </div>
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 flex justify-between items-center">
+                                <span class="font-bold text-slate-700">3. Newton-Raphson:</span>
+                                <span class="text-amber-600 font-bold font-mono">Cuadrática ($\approx 5$ Monedas)</span>
+                            </div>
+                        </div>
+
+                        <!-- Tabla Resumen al Finalizar -->
+                        <div id="race-results-table" class="hidden mt-4 pt-4 border-t border-slate-200">
+                            <h5 class="font-bold text-slate-900 text-xs mb-2">📊 Tabla Comparativa de Resultados:</h5>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-[11px] font-mono text-left text-slate-700 border">
+                                    <thead class="bg-slate-100 border-b">
+                                        <tr>
+                                            <th class="p-1.5">Método</th>
+                                            <th class="p-1.5">Monedas</th>
+                                            <th class="p-1.5">Razón</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="race-results-body">
+                                        <!-- Filas dinámicas -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- FOOTER -->
@@ -847,7 +984,7 @@
     <script>
         // Tab Navigation Logic
         function switchTab(tabId) {
-            const sections = ['general', 'nosotros', 'mod1', 'mod2', 'mod3', 'mod4', 'mod5', 'juego'];
+            const sections = ['general', 'nosotros', 'mod1', 'mod2', 'mod3', 'mod4', 'mod5', 'juego', 'juego2'];
             sections.forEach(sec => {
                 const el = document.getElementById(`sec-${sec}`);
                 const btn = document.getElementById(`nav-${sec}`);
@@ -873,6 +1010,9 @@
             }
             if(tabId === 'juego' && gameQuestions.length > 0) {
                 initGame();
+            }
+            if(tabId === 'juego2') {
+                initRaceGame();
             }
         }
 
@@ -1091,7 +1231,7 @@ Raíz encontrada con éxito: 1.9995`;
         }
 
         // ==========================================
-        // LÓGICA DEL JUEGO DE TEORÍA DE ERRORES
+        // LÓGICA DEL JUEGO 1: TEORÍA DE ERRORES (QUIZ)
         // ==========================================
         const gameQuestions = [
             {
@@ -1240,6 +1380,333 @@ Raíz encontrada con éxito: 1.9995`;
                 document.getElementById('game-feedback').classList.add('hidden');
                 document.getElementById('btn-next-game').classList.add('hidden');
             }
+        }
+
+        // ==========================================
+        // LÓGICA DEL JUEGO 2: CARRERA DE CONVERGENCIA 2D
+        // ==========================================
+        const EXACT_ROOT = 1.324717957244746; // Raíz exacta de x^3 - x - 2 = 0
+        const TARGET_TOL = 1e-6;
+
+        let raceLevel = 1; // 1: Bisección, 2: Punto Fijo, 3: Newton
+        let raceLives = 3;
+        let raceCoins = 0;
+        let currentX = 1.0;
+        let bisectA = 1.0, bisectB = 2.0;
+        let raceActive = false;
+        let raceAnimFrame = null;
+        let raceResultsSummary = [];
+
+        // Canvas & Car
+        let canvas, ctx;
+        let carLane = 1; // 0: Izq, 1: Centro, 2: Der
+        let lanePositions = [80, 200, 320];
+        let roadOffset = 0;
+        let gameItems = []; // Monedas y Conos
+
+        function initRaceGame() {
+            canvas = document.getElementById('raceCanvas');
+            ctx = canvas.getContext('2d');
+
+            // Escuchar Teclado
+            window.removeEventListener('keydown', handleRaceKeydown);
+            window.addEventListener('keydown', handleRaceKeydown);
+
+            // Escuchar Clicks en Canvas para pantallas táctiles
+            canvas.onclick = (e) => {
+                if(!raceActive) return;
+                const rect = canvas.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                if(clickX < canvas.width / 2) moveCarLeft();
+                else moveCarRight();
+            };
+
+            restartRaceGame();
+        }
+
+        function restartRaceGame() {
+            raceLevel = 1;
+            raceResultsSummary = [];
+            document.getElementById('race-results-table').classList.add('hidden');
+            document.getElementById('race-results-body').innerHTML = '';
+            setupLevel(1);
+
+            showOverlay("🏎️ Carrera de Convergencia", 
+                "Conduce esquivando conos y recoge monedas para calcular iteraciones reales de f(x)=x³-x-2 hasta alcanzar la tolerancia < 10⁻⁶.", 
+                "¡Iniciar Carrera!");
+        }
+
+        function setupLevel(lvl) {
+            raceLevel = lvl;
+            raceLives = 3;
+            raceCoins = 0;
+            gameItems = [];
+            carLane = 1;
+
+            if (lvl === 1) {
+                currentX = 1.5;
+                bisectA = 1.0;
+                bisectB = 2.0;
+                document.getElementById('race-level-name').innerText = "1. Bisección";
+            } else if (lvl === 2) {
+                currentX = 1.0; // g(x) = (x + 2)^(1/3)
+                document.getElementById('race-level-name').innerText = "2. Punto Fijo";
+            } else if (lvl === 3) {
+                currentX = 1.0; // Newton: x - (x^3-x-2)/(3x^2-1)
+                document.getElementById('race-level-name').innerText = "3. Newton-Raphson";
+            }
+
+            updateRaceHUD();
+        }
+
+        function handleRaceKeydown(e) {
+            if (!raceActive) return;
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') moveCarLeft();
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') moveCarRight();
+        }
+
+        function moveCarLeft() {
+            if (carLane > 0) carLane--;
+        }
+
+        function moveCarRight() {
+            if (carLane < 2) carLane++;
+        }
+
+        function showOverlay(title, desc, btnText) {
+            raceActive = false;
+            cancelAnimationFrame(raceAnimFrame);
+            document.getElementById('overlay-title').innerText = title;
+            document.getElementById('overlay-desc').innerText = desc;
+            document.getElementById('btn-start-race').innerText = btnText;
+            document.getElementById('race-overlay').classList.remove('hidden');
+        }
+
+        function startRaceLevel() {
+            document.getElementById('race-overlay').classList.add('hidden');
+            raceActive = true;
+            lastSpawnTime = Date.now();
+            requestAnimationFrame(gameLoop);
+        }
+
+        let lastSpawnTime = 0;
+
+        function gameLoop() {
+            if (!raceActive) return;
+
+            // Actualizar carretera
+            roadOffset = (roadOffset + 6) % 40;
+
+            // Generar Monedas y Conos
+            const now = Date.now();
+            if (now - lastSpawnTime > 750) {
+                spawnItem();
+                lastSpawnTime = now;
+            }
+
+            // Actualizar Posiciones de Items y Colisiones
+            for (let i = gameItems.length - 1; i >= 0; i--) {
+                let item = gameItems[i];
+                item.y += 5; // Velocidad de caída
+
+                // Colisión con el auto (y alrededor de 400px)
+                if (item.y > 380 && item.y < 460 && item.lane === carLane) {
+                    if (item.type === 'coin') {
+                        collectCoin();
+                    } else if (item.type === 'cone') {
+                        hitCone();
+                    }
+                    gameItems.splice(i, 1);
+                    continue;
+                }
+
+                // Remover fuera de pantalla
+                if (item.y > 520) {
+                    gameItems.splice(i, 1);
+                }
+            }
+
+            renderRaceCanvas();
+
+            if (raceActive) {
+                raceAnimFrame = requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function spawnItem() {
+            const lane = Math.floor(Math.random() * 3);
+            const type = Math.random() < 0.6 ? 'coin' : 'cone';
+            gameItems.push({ lane, y: -40, type });
+        }
+
+        function collectCoin() {
+            raceCoins++;
+            // Ejecutar iteración real según el nivel
+            if (raceLevel === 1) {
+                // Bisección
+                let c = (bisectA + bisectB) / 2;
+                let fc = Math.pow(c, 3) - c - 2;
+                let fa = Math.pow(bisectA, 3) - bisectA - 2;
+                if (fa * fc < 0) bisectB = c;
+                else bisectA = c;
+                currentX = (bisectA + bisectB) / 2;
+            } else if (raceLevel === 2) {
+                // Punto Fijo: g(x) = (x + 2)^(1/3)
+                currentX = Math.cbrt(currentX + 2);
+            } else if (raceLevel === 3) {
+                // Newton-Raphson: x - (x^3 - x - 2) / (3x^2 - 1)
+                let fx = Math.pow(currentX, 3) - currentX - 2;
+                let fpx = 3 * Math.pow(currentX, 2) - 1;
+                currentX = currentX - (fx / fpx);
+            }
+
+            updateRaceHUD();
+
+            // Comprobar Victoria de Nivel
+            const err = Math.abs(currentX - EXACT_ROOT);
+            if (err < TARGET_TOL) {
+                completeLevel();
+            }
+        }
+
+        function hitCone() {
+            raceLives--;
+            updateRaceHUD();
+
+            if (raceLives <= 0) {
+                raceActive = false;
+                showOverlay("💥 ¡GAME OVER!", "Chocaste con demasiados conos y perdiste todas las vidas de la carrera.", "Reintentar Nivel");
+            }
+        }
+
+        function updateRaceHUD() {
+            const err = Math.abs(currentX - EXACT_ROOT);
+            document.getElementById('race-lives').innerText = '❤️'.repeat(Math.max(0, raceLives));
+            document.getElementById('race-coins').innerText = raceCoins;
+            document.getElementById('race-xn').innerText = currentX.toFixed(6);
+            document.getElementById('race-error').innerText = err.toFixed(6);
+
+            // Porcentaje de progreso
+            let initialErr = raceLevel === 1 ? 0.5 : 0.32;
+            let progress = Math.min(100, Math.max(0, ((Math.log10(initialErr) - Math.log10(err)) / (Math.log10(initialErr) - Math.log10(TARGET_TOL))) * 100));
+            document.getElementById('race-progress-text').innerText = Math.round(progress) + '%';
+            document.getElementById('race-progress-bar').style.width = progress + '%';
+        }
+
+        function completeLevel() {
+            raceActive = false;
+            let rateText = raceLevel === 1 ? "Lineal Lenta (Sublineal)" : raceLevel === 2 ? "Lineal (Factor r ≈ 0.17)" : "Cuadrática (Orden 2)";
+            
+            raceResultsSummary.push({
+                level: raceLevel === 1 ? "Bisección" : raceLevel === 2 ? "Punto Fijo" : "Newton-Raphson",
+                coins: raceCoins,
+                rate: rateText
+            });
+
+            if (raceLevel < 3) {
+                const nextLvl = raceLevel + 1;
+                showOverlay(`🏆 ¡Nivel ${raceLevel} Completado!`, 
+                    `Llegaste a la meta con ${raceCoins} monedas (iteraciones). Razón observada: ${rateText}. ¡Siguiente nivel!`, 
+                    `Iniciar Nivel ${nextLvl}`);
+                setupLevel(nextLvl);
+            } else {
+                // Completado todo el juego
+                renderSummaryTable();
+                showOverlay("🎉 ¡FELICIDADES, HAS COMPLETADO LA CARRERA!", 
+                    `Demostraste cómo el Método de Newton alcanza la meta en solo 5 monedas gracias a su convergencia cuadrática. Revisa la tabla comparativa al lado.`, 
+                    "Volver a Jugar");
+            }
+        }
+
+        function renderSummaryTable() {
+            const container = document.getElementById('race-results-table');
+            const tbody = document.getElementById('race-results-body');
+            tbody.innerHTML = '';
+
+            raceResultsSummary.forEach(r => {
+                const row = document.createElement('tr');
+                row.className = "border-b hover:bg-slate-50";
+                row.innerHTML = `
+                    <td class="p-1.5 font-bold">${r.level}</td>
+                    <td class="p-1.5 text-amber-600 font-bold">${r.coins} Monedas</td>
+                    <td class="p-1.5 text-emerald-600">${r.rate}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            container.classList.remove('hidden');
+        }
+
+        // Renderizado 2D Canvas
+        function renderRaceCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Asfalto
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Líneas de carriles
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([20, 20]);
+            ctx.lineDashOffset = -roadOffset;
+
+            ctx.beginPath();
+            ctx.moveTo(133, 0); ctx.lineTo(133, canvas.height);
+            ctx.moveTo(266, 0); ctx.lineTo(266, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset dash
+
+            // Dibujar Conos y Monedas
+            gameItems.forEach(item => {
+                let x = lanePositions[item.lane];
+                if (item.type === 'coin') {
+                    // Moneda de Iteración (Dorada)
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.beginPath();
+                    ctx.arc(x, item.y, 14, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#d97706';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#92400e';
+                    ctx.font = 'bold 12px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('N', x, item.y + 4);
+                } else {
+                    // Cono de Obstáculo (Naranja)
+                    ctx.fillStyle = '#f97316';
+                    ctx.beginPath();
+                    ctx.moveTo(x, item.y - 14);
+                    ctx.lineTo(x - 12, item.y + 12);
+                    ctx.lineTo(x + 12, item.y + 12);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(x - 8, item.y + 2, 16, 4);
+                }
+            });
+
+            // Dibujar Carro del Jugador
+            let carX = lanePositions[carLane];
+            let carY = 420;
+
+            // Cuerpo del Auto
+            ctx.fillStyle = '#3b82f6'; // Azul
+            ctx.beginPath();
+            ctx.roundRect(carX - 18, carY - 30, 36, 60, 8);
+            ctx.fill();
+
+            // Techo
+            ctx.fillStyle = '#1d4ed8';
+            ctx.fillRect(carX - 14, carY - 10, 28, 28);
+
+            // Faros
+            ctx.fillStyle = '#fef08a';
+            ctx.fillRect(carX - 14, carY - 28, 8, 4);
+            ctx.fillRect(carX + 6, carY - 28, 8, 4);
         }
 
         // Init page
